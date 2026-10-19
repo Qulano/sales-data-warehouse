@@ -1,0 +1,13 @@
+id,name,age,email
+1,Alexander,28,alex@company.com
+2,Dmitry77,34,dmitry@mail.com
+3,Anna,,anna@company.com
+4,Maxim,twenty,max@corp.io
+5,Sergey,45,sergey_gmail.com
+6,Olga,29,olga@mailcom
+7,Elena,31,elena@test.com,extra_column_error
+8,Artem,26
+1,Clone_Alexander,30,clone@company.com
+10,Tatiana,30,tanya@company.com
+11,Robot9,forty,bad_email_no_at_sign
+12,John,24,john@gmail.com
