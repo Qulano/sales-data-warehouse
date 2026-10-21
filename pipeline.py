@@ -1,6 +1,15 @@
-import sqlite3
+import psycopg2
 from rich import print
 import sys
+
+
+DB_CONFIG = {
+    "host": "localhost",
+    "port": 5432,
+    "database": "analytics_warehouse",
+    "user": "qulano",
+    "password": "hf,jnf12"
+}
 
 
 def read_dataset(file_path):
@@ -34,13 +43,13 @@ def transform_orders(raw_orders, valid_client_ids):
         
     
 def load_to_db(clean_records, clean_orders, db_name = "warehouse.db"):
-    with sqlite3.connect(db_name) as connection:
+    with psycopg2.connect(**DB_CONFIG) as connection:
         cursor = connection.cursor()
-        cursor.execute("DROP TABLE IF EXISTS clients")
         cursor.execute("DROP TABLE IF EXISTS orders")
+        cursor.execute("DROP TABLE IF EXISTS clients")
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS clients (
-                id INTEGER,
+                id INTEGER PRIMARY KEY,
                 name TEXT,
                 age INTEGER,
                 email TEXT
@@ -48,7 +57,7 @@ def load_to_db(clean_records, clean_orders, db_name = "warehouse.db"):
         ''')
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS orders (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 item TEXT NOT NULL,
                 price INTEGER NOT NULL,
                 client_id INTEGER NOT NULL,
@@ -57,21 +66,23 @@ def load_to_db(clean_records, clean_orders, db_name = "warehouse.db"):
         ''')
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_orders_client_id ON orders (client_id)")
         
-        cursor.executemany('''
-            INSERT INTO orders (item, price, client_id)
-            VALUES (?, ?, ?)
-        ''', clean_orders)
 
         cursor.executemany('''
             INSERT INTO clients (id, name, age, email)
-            VALUES (?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s)
         ''', clean_records)
+        
+        cursor.executemany('''
+            INSERT INTO orders (item, price, client_id)
+            VALUES (%s, %s, %s)
+        ''', clean_orders)
+        
     connection.close()
     print(f"[bold green]Успешно загружено в базу: {len(clean_records)} записей![/bold green]\n")
     
     
 def generate_report(db_name = "warehouse.db"):
-    with sqlite3.connect("warehouse.db") as connection:
+    with psycopg2.connect(**DB_CONFIG) as connection:
         cur = connection.cursor()
 
         cur.execute("SELECT * FROM  clients")
