@@ -108,9 +108,9 @@ def generate_report(db_name = "warehouse.db"):
     connection.close() 
     
        
-def run_etl():
-    records = read_dataset("dirty_data.csv")
-    orders = read_dataset("dirty_orders.csv")
+def run_etl(clients_file="dirty_data.csv", orders_file="dirty_orders.csv"):
+    records = read_dataset(clients_file)
+    orders = read_dataset(orders_file)
     clean_records = transform(records)
     valid_ids = [client[0] for client in clean_records]
     full_orders = transform_orders(orders, valid_ids)
