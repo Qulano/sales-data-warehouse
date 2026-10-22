@@ -1,14 +1,18 @@
+import os
+from dotenv import load_dotenv
 import psycopg2
 from rich import print
 import sys
 
+load_dotenv()
+
 
 DB_CONFIG = {
-    "host": "localhost",
-    "port": 5432,
-    "database": "analytics_warehouse",
-    "user": "qulano",
-    "password": "hf,jnf12"
+    "host": os.getenv("DB_HOST", "localhost"),
+    "port": os.getenv("DB_PORT", 5432),
+    "database": os.getenv("DB_NAME", "analytics_warehouse"),
+    "user": os.getenv("DB_USER", "postgres"),
+    "password": os.getenv("DB_PASSWORD")
 }
 
 
