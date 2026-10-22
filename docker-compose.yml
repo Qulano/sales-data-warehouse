@@ -5,11 +5,11 @@ services:
     container_name: warehouse_postgres
     restart: always
     environment:
-      POSTGRES_USER: qulano
-      POSTGRES_PASSWORD: hf,jnf12
-      POSTGRES_DB: analytics_warehouse
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

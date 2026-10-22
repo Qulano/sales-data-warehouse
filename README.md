@@ -64,7 +64,10 @@ cd sales-data-warehouse
 ### 2. Configure Environment
 Copy the example configuration to your local .env:
 ```bash
-cp .env.example .env
+cp .env.example .env #cp on Linux, macOS, PowerShell
+```
+```bash
+copy .env.example .env #copy on cmd Windows
 ```
 
 ### 3. Launch PostgreSQL via Docker
@@ -78,6 +81,10 @@ docker compose up -d
 python -m venv venv
 .\venv\Scripts\activate
 pip install -r requirements.txt
+```
+**Note for Windows PowerShell users:** If you encounter a script execution error (`PSSecurityException`), run the following command in PowerShell once to allow virtual environment activation:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 ```
 
 ### 5. Run the Pipeline
