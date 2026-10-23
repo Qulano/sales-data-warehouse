@@ -77,8 +77,15 @@ docker compose up -d
 ```
 
 ### 4. Install Dependencies
+# On Windows (if 'python' is not found, use 'py'):
 ```bash
-python -m venv venv
+py -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+```
+# On macOS / Linux:
+```bash
+python3 -m venv venv
 .\venv\Scripts\activate
 pip install -r requirements.txt
 ```
@@ -89,12 +96,29 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 
 ### 5. Run the Pipeline
 Execute the full automated workflow:
+# Windows:
 ```bash
-python pipeline.py
+py pipeline.py
+```
+# macOS / Linux:
+```bash
+python3 pipeline.py
 ```
 
 Or run granular stages using CLI flags:
+# Windows:
 ```bash
-python pipeline.py --etl     # Run only Extract, Transform, and Database Load
-python pipeline.py --report  # Run only Relational Financial Reporting
+py pipeline.py --etl            # Run only Extract, Transform, and Database Load
+py pipeline.py --report         # Run only Relational Financial Reporting
 ```
+# macOS / Linux:
+```bash
+python3 pipeline.py --etl       # Run only Extract, Transform, and Database Load
+python3 pipeline.py --report    # Run only Relational Financial Reporting
+```
+
+## 📸 Demo & Terminal Output
+
+![Pipeline Demo](assets/image1.png)
+
+![Pipeline Demo](assets/image.png)
